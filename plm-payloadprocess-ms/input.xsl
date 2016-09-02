@@ -117,12 +117,11 @@
 		<xsl:apply-templates
 			select="/COLLECTION/UnchangedParts/Part[Number = current()]/MaterialType" />
 	</xsl:template>
-
+		
 	<!-- Identity transform template -->
 	<xsl:template match="@* | node()">
 		<xsl:copy>
 			<xsl:apply-templates select="@* | node()" />
-			
 		</xsl:copy>
 	</xsl:template>
 

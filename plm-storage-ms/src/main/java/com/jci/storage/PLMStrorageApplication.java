@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jci.storage.dao.PLMStorageDao;
 import com.jci.storage.service.PLMStorageService;
 
 @SpringBootApplication
@@ -44,13 +45,14 @@ public class PLMStrorageApplication {
 	//given by subcriber ms
 	@Autowired
 	private PLMStorageService storageservice;
+	@Autowired
+	PLMStorageDao storageDao;
 		@RequestMapping(value = "/receiveXml", method = { RequestMethod.POST })
-		public String recievedXmlFromSubscriber(@RequestBody HashMap<String, Object> s1) throws Exception {
+		public String recievedXmlFromSubscriber(@RequestBody HashMap<String, Object> xml) throws Exception {
 
 		System.out.println("Data from Subcriber recived at storage");
 		System.out.println("-------------------------------------------------------------");
-	//System.out.println(s1.get("xml"));
-		return storageservice.PutXmlPartBom(s1);
+		return storageservice.PutXmlPartBom(xml);
 
 	}
 		//given by PART-BOM ms
@@ -67,13 +69,15 @@ public class PLMStrorageApplication {
 		System.out.println("===================JSON=======================");
 		System.out.println(jsonXml.get("json"));
 
-		return null;
-	//	return storageservice.PutJsonBom(json);
+		return storageDao.PutjsonBom(jsonXml);
 
 	}
+	
 	@RequestMapping(value = "/fallBack")
 	public String hystrixCircuitBreaker(){
 	storageservice.hystrixCircuitBreaker();
 		return "Success";
 	}
+	
+	
 }

@@ -1,0 +1,22 @@
+package com.jci.storage.domain;
+
+import java.util.Date;
+
+import com.microsoft.windowsazure.services.table.client.TableServiceEntity;
+
+public class PLMPayload extends TableServiceEntity{
+	
+	String code;
+	String status;
+	String message;
+	String date;
+	
+	
+		
+		public PLMPayload(String ecnNo, String ecnName) 
+		{
+        this.partitionKey = ecnNo;
+        this.rowKey = ecnName;
+    }
+	public PLMPayload() { }
+}

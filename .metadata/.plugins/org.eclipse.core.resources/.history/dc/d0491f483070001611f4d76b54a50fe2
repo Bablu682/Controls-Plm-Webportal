@@ -1,0 +1,165 @@
+package com.jci.portal.domain;
+
+import com.microsoft.azure.storage.table.TableServiceEntity;
+
+public class ControllesPlmEntity extends TableServiceEntity {
+	private long txnID;
+	private Boolean ptcAck;
+	private Boolean partPayloadProcessed;
+	private Boolean bomPayloadProcessed;
+	private String ECNNumber;
+	private String Error;
+	private Boolean PartError;
+	private Boolean BomError;
+	private int isProcessedTotal;
+	private int isErroredTotal;
+	private int Status;
+	/*private Boolean isErrored;
+	private Boolean isProcessed;*/
+	private String description;
+	private String userName;
+	private String globalId;
+	private String ERPName;
+	private String isErrored;
+	private String isProcessed;
+
+	/// new
+
+	public ControllesPlmEntity(String partitionKey, String rowKey) {
+		this.partitionKey = "SAP_PLM";
+		this.rowKey = rowKey;
+		// TODO Auto-generated constructor stub
+	}
+
+	public ControllesPlmEntity() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getERPName() {
+		return ERPName;
+	}
+
+	public void setERPName(String eRPName) {
+		ERPName = eRPName;
+	}
+
+	
+
+	public int getIsProcessedTotal() {
+		return isProcessedTotal;
+	}
+
+	public void setIsProcessedTotal(int isProcessedTotal) {
+		this.isProcessedTotal = isProcessedTotal;
+	}
+
+	public int getIsErroredTotal() {
+		return isErroredTotal;
+	}
+
+	public void setIsErroredTotal(int isErroredTotal) {
+		this.isErroredTotal = isErroredTotal;
+	}
+
+	public String getECNNumber() {
+		return ECNNumber;
+	}
+
+	public void setECNNumber(String eCNNumber) {
+		ECNNumber = eCNNumber;
+	}
+
+	public String getError() {
+		return Error;
+	}
+
+	public void setError(String error) {
+		Error = error;
+	}
+
+	public int getStatus() {
+		return Status;
+	}
+
+	public void setStatus(int status) {
+		this.Status = status;
+	}
+
+	public Boolean getPtcAck() {
+		return ptcAck;
+	}
+
+	public Boolean getPartError() {
+		return PartError;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getGlobalId() {
+		return globalId;
+	}
+
+	public void setGlobalId(String globalId) {
+		this.globalId = globalId;
+	}
+
+	public void setPartError(Boolean partError) {
+		PartError = partError;
+	}
+
+	public Boolean getBomError() {
+		return BomError;
+	}
+
+	public void setBomError(Boolean bomError) {
+		BomError = bomError;
+	}
+
+	public void setPtcAck(Boolean ptcAck) {
+		this.ptcAck = ptcAck;
+	}
+
+	public Boolean getPartPayloadProcessed() {
+		return partPayloadProcessed;
+	}
+
+	public void setPartPayloadProcessed(Boolean partPayloadProcessed) {
+		this.partPayloadProcessed = partPayloadProcessed;
+	}
+
+	public Boolean getBomPayloadProcessed() {
+		return bomPayloadProcessed;
+	}
+
+	public void setBomPayloadProcessed(Boolean bomPayloadProcessed) {
+		this.bomPayloadProcessed = bomPayloadProcessed;
+	}
+
+	public long getTxnID() {
+		return txnID;
+	}
+
+	public void setTxnID(long txnID) {
+		this.txnID = txnID;
+	}
+
+	@Override
+	public String toString() {
+		return "JCIASTSampleEntity [txnID=" + txnID + ", ECNNumber=" + ECNNumber + ", Error=" + Error + "]";
+	}
+
+}

@@ -1,0 +1,42 @@
+package com.jci.portal.domain;
+
+//import com.microsoft.azure.storage.table.TableServiceEntity;
+
+import com.microsoft.windowsazure.services.table.client.TableServiceEntity;
+
+public class CounterEntity extends TableServiceEntity {
+	
+	private Integer errorCount;// 3
+	private Integer processedCount;// 2
+	public CounterEntity(String partitionKey, String rowKey) {
+		this.partitionKey = partitionKey;
+		this.rowKey = rowKey;
+	}
+
+	public CounterEntity() {
+
+	}
+	
+	
+
+	public Integer getProcessedCount() {
+		return processedCount;
+	}
+
+	public void setProcessedCount(Integer processedCount) {
+		this.processedCount = processedCount;
+	}
+
+	public Integer getErrorCount() {
+		return errorCount;
+	}
+
+	public void setErrorCount(Integer errorCount) {
+		this.errorCount = errorCount;
+	}
+
+
+
+	
+
+}

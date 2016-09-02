@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><COLLECTION>
 <Release NAME="Release" STATUS="0" TYPE="Unknown">
 <Transaction>
-<TransactionNumber>27</TransactionNumber>
+<TransactionNumber>55</TransactionNumber>
 <ReleaseNumber>25</ReleaseNumber>
 <PrimaryObjectID>OR:wt.change2.WTChangeOrder2:102708:258849013-1469111825022-123418227-71-0-88-10@jci-dev5.ptcmscloud.com</PrimaryObjectID>
 <CreatedBy>beOrgAdmin</CreatedBy>
@@ -43,6 +43,10 @@
 <AddedBOMs NAME="AddedBOMs" STATUS="0" TYPE="Unknown"/>
 <ChangedBOMs NAME="ChangedBOMs" STATUS="0" TYPE="Unknown"/>
 <UnchangedBOMs NAME="UnchangedBOMs" STATUS="0" TYPE="Unknown"/>
+<BOMCOMPONENTS-BOMCOMPONENTS/>
+<PARTS-PARTS/>
+<BOMCOMPONENTS-BOMCOMPONENTS/>
+<PARTS-PARTS/>
 <UnchangedBOMComponents NAME="UnchangedBOMComponents" STATUS="0" TYPE="Unknown"/>
 <DeletedSubstitutes NAME="DeletedSubstitutes" STATUS="0" TYPE="Unknown"/>
 <AddedSubstitutes NAME="AddedSubstitutes" STATUS="0" TYPE="Unknown"/>
@@ -214,7 +218,7 @@
 <ObjectID>OR:wt.part.WTPartUsageLink:102662:258849013-1469111825022-123418227-71-0-88-10@jci-dev5.ptcmscloud.com</ObjectID>
 <Class>com.ptc.windchill.esi.BOMComponent</Class>
 <PartNumber>RAC0006</PartNumber>
-<MaterialType>M</MaterialType>
+<MaterialType>MOVing Material 1</MaterialType>
 <AssemblyPartNumber>BOM0007</AssemblyPartNumber>
 <AssemblyPartID>OR:wt.part.WTPart:102646:258849013-1469111825022-123418227-71-0-88-10@jci-dev5.ptcmscloud.com</AssemblyPartID>
 <Quantity>1</Quantity>
@@ -240,7 +244,7 @@
 <ObjectID>OR:wt.part.WTPartUsageLink:102664:258849013-1469111825022-123418227-71-0-88-10@jci-dev5.ptcmscloud.com</ObjectID>
 <Class>com.ptc.windchill.esi.BOMComponent</Class>
 <PartNumber>RAC0007</PartNumber>
-<MaterialType>M</MaterialType>
+<MaterialType>Moving material 3</MaterialType>
 <AssemblyPartNumber>BOM0007</AssemblyPartNumber>
 <AssemblyPartID>OR:wt.part.WTPart:102646:258849013-1469111825022-123418227-71-0-88-10@jci-dev5.ptcmscloud.com</AssemblyPartID>
 <Quantity>1</Quantity>
@@ -266,7 +270,7 @@
 <ObjectID>OR:wt.part.WTPartUsageLink:102663:258849013-1469111825022-123418227-71-0-88-10@jci-dev5.ptcmscloud.com</ObjectID>
 <Class>com.ptc.windchill.esi.BOMComponent</Class>
 <PartNumber>RAC0008</PartNumber>
-<MaterialType>M</MaterialType>
+<MaterialType>Moving material 2</MaterialType>
 <AssemblyPartNumber>BOM0007</AssemblyPartNumber>
 <AssemblyPartID>OR:wt.part.WTPart:102646:258849013-1469111825022-123418227-71-0-88-10@jci-dev5.ptcmscloud.com</AssemblyPartID>
 <Quantity>1</Quantity>
@@ -430,7 +434,7 @@
 <Width/>
 <Height/>
 <ProjectNumber/>
-<MaterialType>M</MaterialType>
+<MaterialType>MOVing Material 1</MaterialType>
 <PartFamilyCode/>
 <BuyAmerican>No</BuyAmerican>
 <BuyAmericanXref/>
@@ -527,7 +531,7 @@
 <Width/>
 <Height/>
 <ProjectNumber/>
-<MaterialType>M</MaterialType>
+<MaterialType>Moving material 2</MaterialType>
 <PartFamilyCode/>
 <BuyAmerican>No</BuyAmerican>
 <BuyAmericanXref/>
@@ -602,7 +606,7 @@
 <LotNumberEffectivityCxtPartNumber/>
 <BaseUnitOfMeasure>ea</BaseUnitOfMeasure>
 <Description>RAC0007</Description>
-<PartType>separable</PartType>
+<PartType>separbable</PartType>
 <ProcurementType>make</ProcurementType>
 <ItemStatus>RELEASED</ItemStatus>
 <View/>
@@ -624,7 +628,8 @@
 <Width/>
 <Height/>
 <ProjectNumber/>
-<MaterialType>M</MaterialType>
+<MaterialType>Moving material 3</MaterialType>
+<!-- bring this -->
 <PartFamilyCode/>
 <BuyAmerican>No</BuyAmerican>
 <BuyAmericanXref/>

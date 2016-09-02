@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><COLLECTION><Release NAME="Release" STATUS="0" TYPE="Unknown">
+<?xml version="1.0" encoding="UTF-8"?><COLLECTION><Release NAME="Release" STATUS="0" TYPE="Unknown">
 <Transaction>
-    <TransactionNumber>27</TransactionNumber>
+    <TransactionNumber>55</TransactionNumber>
     <ReleaseNumber>25</ReleaseNumber>
     <PrimaryObjectID>OR:wt.change2.WTChangeOrder2:102708:258849013-1469111825022-123418227-71-0-88-10@jci-dev5.ptcmscloud.com</PrimaryObjectID>
     <CreatedBy>beOrgAdmin</CreatedBy>
@@ -170,7 +170,7 @@
     <Width/>
     <Height/>
     <ProjectNumber/>
-    <MaterialType>M</MaterialType>
+    <MaterialType>MOVing Material 1</MaterialType>
     <PartFamilyCode/>
     <BuyAmerican>No</BuyAmerican>
     <BuyAmericanXref/>
@@ -266,7 +266,7 @@
     <Width/>
     <Height/>
     <ProjectNumber/>
-    <MaterialType>M</MaterialType>
+    <MaterialType>Moving material 2</MaterialType>
     <PartFamilyCode/>
     <BuyAmerican>No</BuyAmerican>
     <BuyAmericanXref/>
@@ -340,7 +340,7 @@
     <LotNumberEffectivityCxtPartNumber/>
     <BaseUnitOfMeasure>ea</BaseUnitOfMeasure>
     <Description>RAC0007</Description>
-    <PartType>separable</PartType>
+    <PartType>separbable</PartType>
     <ProcurementType>make</ProcurementType>
     <ItemStatus>RELEASED</ItemStatus>
     <View/>
@@ -362,7 +362,7 @@
     <Width/>
     <Height/>
     <ProjectNumber/>
-    <MaterialType>M</MaterialType>
+    <MaterialType>Moving material 3</MaterialType>     <!-- bring this -->
     <PartFamilyCode/>
     <BuyAmerican>No</BuyAmerican>
     <BuyAmericanXref/>
@@ -474,6 +474,8 @@
 </UnchangedBOMs>
 <DeletedBOMComponents NAME="DeletedBOMComponents" STATUS="0" TYPE="Unknown">
 </DeletedBOMComponents>
+<BOMCOMPONENTS-BOMCOMPONENTS/>
+<PARTS-PARTS/>
 <AddedBOMComponents NAME="AddedBOMComponents" STATUS="0" TYPE="Unknown">
 <BOMComponent>
     <ObjectID>OR:wt.part.WTPartUsageLink:102662:258849013-1469111825022-123418227-71-0-88-10@jci-dev5.ptcmscloud.com</ObjectID>
@@ -545,6 +547,9 @@
     <TargetID>FILE-DEV</TargetID>
 </BOMComponent>
 </AddedBOMComponents>
+<BOMCOMPONENTS-BOMCOMPONENTS>
+</BOMCOMPONENTS-BOMCOMPONENTS>
+<PARTS-PARTS/>
 <ChangedBOMComponents NAME="ChangedBOMComponents" STATUS="0" TYPE="Unknown">
 </ChangedBOMComponents>
 <UnchangedBOMComponents NAME="UnchangedBOMComponents" STATUS="0" TYPE="Unknown">

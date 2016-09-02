@@ -5,14 +5,23 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import com.microsoft.windowsazure.Configuration;
@@ -29,7 +38,6 @@ import com.microsoft.windowsazure.services.servicebus.models.ReceiveQueueMessage
 public class PLMSubscriberMSServiceImpl implements PLMSubscriberMSService {
 
 
-	@LoadBalanced
 	@Bean
 	RestTemplate restTemplate() {
 		return new RestTemplate();
@@ -37,8 +45,6 @@ public class PLMSubscriberMSServiceImpl implements PLMSubscriberMSService {
 
 	@Autowired
 	RestTemplate restTemplate;
-	@Autowired
-	PLMSubscriberMSFeignClient process;
 	
 	
 
@@ -97,135 +103,42 @@ public class PLMSubscriberMSServiceImpl implements PLMSubscriberMSService {
 	}
 	
 	
-	//receiving code with resttemplate
-	/*@RequestMapping(value = "/receiver" , method = { RequestMethod. POST })
-    public String processUploadFile(
-           @RequestParam (value = "param1" ) String param1){
-
-         System. out .println("Hello from " + param1 );
-
-
-       return null ;
-   }
-*/
 
 	public String azureMessageSubscriber(ServiceBusContract service) {
 
 		try {
 
 			ReceiveMessageOptions opts = ReceiveMessageOptions.DEFAULT;
-			opts.setReceiveMode(ReceiveMode.PEEK_LOCK);
+		//	opts.setReceiveMode(ReceiveMode.PEEK_LOCK);
+			service.getQueue(queueName).getValue().setMaxSizeInMegabytes((long) 1); 
 			while (true) {
 				ReceiveQueueMessageResult resultQM = service.receiveQueueMessage(queueName);
 				BrokeredMessage message = resultQM.getValue();
-				if (message != null && message.getMessageId() != null) {
-					System.out.println("MessageID: " + message.getMessageId());
+				
+				service.getQueue(queueName).getValue().setMaxSizeInMegabytes((long) 1); 
+				StreamSource source = new StreamSource(message.getBody()) ;
+				
+					StringWriter outWriter = new StringWriter();
+									StreamResult result = new StreamResult( outWriter );
+									TransformerFactory tFactory = TransformerFactory.newInstance();
+									Transformer transformer = tFactory.newTransformer();
+									transformer.transform( source, result );  
+									StringBuffer sb = outWriter.getBuffer(); 
+									String finalstring = sb.toString(); 
 
-					System.out.print("From queue: ");
-					byte[] b = new byte[90000];
-					String s = null;
-					int numRead = message.getBody().read(b);
-					while (-1 != numRead) {
-						s = new String(b);
-						s = s.trim();
-
-						numRead = message.getBody().read(b);
-						completeXml = completeXml + s;
-						
-						s = null;
-					}
-
-					int index = completeXml.lastIndexOf("</COLLECTION>");
-					index = index + 13;
-					completeXml = completeXml.substring(0, index);
+					System.out.println(finalstring);
+					String urlString="http://localhost:9090/receiveXml";
 					
-					
-					/*File file = new File("Payload.xml");
-
-					if (!file.exists()) {
-						file.createNewFile();
-					}
-
-					FileWriter fw = new FileWriter(file.getAbsoluteFile());
-					BufferedWriter bw = new BufferedWriter(fw);
-					bw.write(completeXml);
-					bw.close();
-*/
-					
-					//from here need to send the completeXml to payloadprocess
-					
-					process.sendData(completeXml);
-					
-					
-					
-					
-					/*File file = new File("Payload.xml");
-
-					if (!file.exists()) {
-						file.createNewFile();
-					}
-
-					FileWriter fw = new FileWriter(file.getAbsoluteFile());
-					BufferedWriter bw = new BufferedWriter(fw);
-					bw.write(completeXml);
-					bw.close();
-					TransformerFactory tFactory = TransformerFactory.newInstance();
-					Transformer transformer = tFactory
-							.newTransformer(new javax.xml.transform.stream.StreamSource("input.xsl"));
-					transformer.transform(new javax.xml.transform.stream.StreamSource("Payload.xml"),
-							new javax.xml.transform.stream.StreamResult(new FileOutputStream("Payload_XSLT_Out.xml")));
-
-					DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-					InputStream inputStream = new FileInputStream(new File("Payload_XSLT_Out.xml"));
-					org.w3c.dom.Document doc = documentBuilderFactory.newDocumentBuilder().parse(inputStream);
-					StringWriter stw = new StringWriter();
-					Transformer serializer = TransformerFactory.newInstance().newTransformer();
-					serializer.transform(new DOMSource(doc), new StreamResult(stw));*/
-					
-					/*//sending xml to Storage client
-					sfClient.sendData(stw.toString());
-
-					System.out.println("The json is formed");
-					org.json.JSONObject payloadJsonXml = XML.toJSONObject(stw.toString()); 
-
-					if (stw.toString().contains("BOMHeader")) {
-						payLoadType = "BOM";
-					} else {
-						payLoadType = "PART";
-					}
-
-					System.out.println("Implementing feign client");
-					
-					//sending to bom
-					HashMap<String , String> hashMap = new HashMap<>();
-					hashMap.put("payloadJsonXml", payloadJsonXml.toString());
-					client.sendData2(hashMap);*/
-					
-					
-					
-					/*URI uri = new URI("http://BOM-SERVICE/receiver" ); 
-                    MultiValueMap<String, Object> mvm = new LinkedMultiValueMap<String, Object>();
-                 mvm.add( "param1" , "TestParameter" );
-                 Map result = restTemplate .postForObject(uri , mvm , Map.class );*/
-
-					
-					
+					restTemplate.postForObject( urlString, finalstring , String.class);
 					System.out.println("Custom Property: " + message.getProperty("MyProperty"));
-					
-				} else {
-					System.out.println("Finishing up - no more messages.");
-					break;
-					// Added to handle no more messages.
-					// Could instead wait for more messages to be added.
-				}
-			}
-			return "success in retreiving the message from SB";
 
-		} catch (Exception e) {
+		} 
+		}
+			catch (Exception e) {
 			e.printStackTrace();
 			System.out.print("Generic exception encountered: ");
 			System.out.println(e.getMessage());
-			return "failure in retreiving the message from SB";
+			return "Transaction Complete";
 		}
 
 	}

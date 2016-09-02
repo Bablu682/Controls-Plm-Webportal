@@ -108,7 +108,7 @@ public class PLMProcessPayloadServiceImpl implements PLMProcessPayloadService{
         Object object = jp.parse( new FileReader("JSON.json" ));
         net.minidev.json.JSONObject jso = (net.minidev.json.JSONObject) object;
         
-        String plant = "RY1"; // this value I can fetch from XML
+        String plant = "EXM"; // this value I can fetch from XML
 		List<String> values = JsonPath.read(jso, String.format("$.data.mapping.[?(@.plant==%s)].erp", plant));
 		List<String> values1 = JsonPath.read(jso, String.format("$.data.mapping.[?(@.plant==%s)].region", plant));
 		String erp = values.isEmpty() ? null : values.get(0);
@@ -140,10 +140,11 @@ public class PLMProcessPayloadServiceImpl implements PLMProcessPayloadService{
 		infoJson.put("region", region);
 	
 		//sending XML to Storage ms
-		List<ServiceInstance> serviceInstance = discoveryClient.getInstances("plm-storage-ms");
+		/*List<ServiceInstance> serviceInstance = discoveryClient.getInstances("plm-storage-ms");
 		ServiceInstance bomInstance = serviceInstance.get(0);
 		String urlString = "http://" + bomInstance.getHost() + ":" + Integer.toString(bomInstance.getPort())
-		+ "/receiveXml";
+		+ "/receiveXml";*/
+		String urlString="http://localhost:9292/receiveXml";
 		 	HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		 	hashMap.put("xml", payloadXML.toString());
 	        
@@ -154,14 +155,19 @@ public class PLMProcessPayloadServiceImpl implements PLMProcessPayloadService{
 		org.json.JSONObject collectionPayload = (JSONObject)payloadJsonXml.get("COLLECTION");
 		
 		//sending to part-bom ms
-		List<ServiceInstance> serviceInstance1 = discoveryClient.getInstances("plm-part-bom-ms");
+		/*List<ServiceInstance> serviceInstance1 = discoveryClient.getInstances("plm-part-bom-ms");
 		ServiceInstance bomInstance1 = serviceInstance1.get(0);
 		String urlString1 = "http://" + bomInstance1.getHost() + ":" + Integer.toString(bomInstance1.getPort())
-		+ "/receiveJson";
+		+ "/receiveJson";*/
+		String urlString1="http://localhost:9191/receiveJson";
         HashMap<String, Object> mvm = new HashMap<String, Object>();
         mvm.put("json", infoJson.toString());
         mvm.put("bom", collectionPayload.get("BOMCOMPONENTS-BOMCOMPONENTS").toString()); 
         mvm.put("part", collectionPayload.get("PARTS-PARTS").toString());
+        mvm.put("erp", erp);
+        mvm.put("plant", plant);
+        mvm.put("region", region);
+        mvm.put("ecnNo", ecnNo);
         result = restTemplate.postForObject( urlString1, mvm , Map.class);
 		}
 		catch(Exception e){

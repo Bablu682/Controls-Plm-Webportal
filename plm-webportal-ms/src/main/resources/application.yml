@@ -1,8 +1,6 @@
-server:
-  port: 9292
-
-
 debug: true
+server:
+  port: 8787
 
 logging:
   level:

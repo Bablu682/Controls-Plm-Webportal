@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+
+<body>
+
+<p>Click on the Hyperlink to Reload the Page: <p>
+
+<a href="javascript:location.reload(true)">Refresh Page</a>
+
+<p id="example"></p>
+
+<script>
+
+</script>
+
+</body>
+
+</html>

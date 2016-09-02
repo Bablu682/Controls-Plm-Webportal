@@ -1,0 +1,29 @@
+package com.jci.portal.domain;
+
+import com.microsoft.azure.storage.table.TableServiceEntity;
+
+public class ControllesPlmEntity extends TableServiceEntity {
+		String isprocessed;
+			String iserrored;
+			String message;
+			String code;
+			String status;
+			String erp;
+			String region;
+			String plant;
+			String xmllink;
+			String processeddate;
+			String createddate;
+			String processby;
+			String createdby;
+			String acknowledged;
+			String acknowledgestatus;
+			String acknowledgecode;
+			String acknowledgemessage;
+			String acknowledgedate;
+			String acknowledgeby;
+			String uiprocessed;
+			String uiprocessedby;
+			String uiprocessdate; 
+
+}

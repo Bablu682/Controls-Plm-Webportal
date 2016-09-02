@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xml.sax.SAXException;
 
+import com.jci.subscriber.service.PLMSubscriberMSService;
 import com.jci.subscriber.service.PLMSubscriberMSServiceImpl;
 import com.microsoft.windowsazure.services.servicebus.ServiceBusContract;
 
 
 @SpringBootApplication
-@EnableFeignClients
 @RestController
 @EnableEurekaClient
 @EnableDiscoveryClient
@@ -38,9 +38,11 @@ public class PLMSubscriberMSApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PLMSubscriberMSApplication.class, args);
 	}
-
+/*
 	@Autowired
-	private PLMSubscriberMSServiceImpl azureSBCService;
+	private PLMSubscriberMSServiceImpl azureSBCService;*/
+	@Autowired
+	PLMSubscriberMSService azureSBCService;
 	
 	
 
@@ -53,7 +55,7 @@ public class PLMSubscriberMSApplication {
 			
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			InputStream inputStream = new FileInputStream(
-					new File("ESIResponse_8_ecn_Part.xml"));
+					new File("Payload.xml"));
 			org.w3c.dom.Document doc = documentBuilderFactory.newDocumentBuilder().parse(inputStream);
 			StringWriter stw = new StringWriter();
 			Transformer serializer = TransformerFactory.newInstance().newTransformer();

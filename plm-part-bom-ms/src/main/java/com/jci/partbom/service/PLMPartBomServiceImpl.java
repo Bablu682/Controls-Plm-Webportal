@@ -74,19 +74,27 @@ public class PLMPartBomServiceImpl implements PLMPartBomService {
 	@Override
 	public String jsonSendToStorage(HashMap<String, Object> jsonXml) {
 
-		System.out.println("Data reach to service impl of PART-BOM ms");
+		System.out.println("Data reach to service impl from PART-BOM ms");
 		
 			//sending to storage- ms
-					String storageUri;
+//					String storageUri;
 					try 
 					{
-					List<ServiceInstance> serviceInstance = discoveryClient.getInstances("plm-storage-ms");
+					/*List<ServiceInstance> serviceInstance = discoveryClient.getInstances("plm-storage-ms");
 					ServiceInstance bomInstance = serviceInstance.get(0);
 					storageUri = "http://" + bomInstance.getHost() + ":" + Integer.toString(bomInstance.getPort())
-					+ "/sendJsonStorage";
-					 Map result = restTemplate.postForObject( storageUri, jsonXml , Map.class); 
+					+ "/sendJsonStorage";*/
+						
+						// rnanble code comment for testing person api  code 
+						
+						
+						/*String storageUri="http://localhost:9292/sendJsonStorage";	
+					 Map result = restTemplate.postForObject( storageUri, jsonXml , Map.class); */
+						
+						String storageUri="http://localhost:9292/sendJsonStorage";	
+						 Map result = restTemplate.postForObject( storageUri, jsonXml , Map.class); 
 					}
-					catch(Exception e)
+				catch(Exception e)
 					{
 						e.printStackTrace();
 					}
@@ -108,5 +116,7 @@ public class PLMPartBomServiceImpl implements PLMPartBomService {
 		return "fall back is call ";
 
 	}
+
+	
 
 }

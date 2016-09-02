@@ -1,0 +1,278 @@
+package com.jci.portal.dao;
+
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.jci.portal.domain.ControllesPlmEntity;
+import com.jci.portal.domain.MiscDataEntity;
+import com.jci.portal.utils.Constants;
+import com.microsoft.azure.storage.StorageException;
+/*import com.microsoft.windowsazure.services.blob.client.CloudBlobContainer;
+import com.microsoft.windowsazure.services.core.storage.CloudStorageAccount;
+import com.microsoft.windowsazure.services.core.storage.StorageException;
+import com.microsoft.windowsazure.services.table.client.CloudTable;
+import com.microsoft.windowsazure.services.table.client.CloudTableClient;
+import com.microsoft.windowsazure.services.table.client.TableConstants;
+import com.microsoft.windowsazure.services.table.client.TableOperation;
+import com.microsoft.windowsazure.services.table.client.TableQuery;
+import com.microsoft.windowsazure.services.table.client.TableQuery.QueryComparisons;*/
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.table.CloudTable;
+import com.microsoft.azure.storage.table.CloudTableClient;
+import com.microsoft.azure.storage.table.TableOperation;
+import com.microsoft.azure.storage.table.TableQuery;
+import com.microsoft.azure.storage.table.TableQuery.QueryComparisons;
+import com.microsoft.windowsazure.services.table.client.TableConstants;
+
+@Repository
+public class PLMInsertDataDaoImpl {
+	private static final Logger logger = LoggerFactory.getLogger(PLMInsertDataDaoImpl.class);
+	CloudBlobContainer blobContainer = null;
+	CloudTableClient tableClient = null;
+	int isProcessedcount = 0;
+	int isErroredcount = 0;
+	@Autowired
+	private com.jci.portal.azure.AzureStorage azureStorage;
+
+	public MiscDataEntity getTotalProcessedEntities11() {
+		MiscDataEntity dataEntity = new MiscDataEntity("TOTAL_COUNT", "SAP");
+		try {
+			CloudTable cloudTable = azureStorage.getTable(Constants.TABLE_PLM_DETAILS);
+
+			String partitionFilter = TableQuery.generateFilterCondition(TableConstants.PARTITION_KEY,
+					QueryComparisons.EQUAL, "SAP_PLM");
+
+			TableQuery<ControllesPlmEntity> query = TableQuery.from(ControllesPlmEntity.class).where(partitionFilter);
+
+			for (ControllesPlmEntity entity : cloudTable.execute(query)) {
+				boolean isProcessedValue = entity.getIsProcessed();
+				// System.out.println("boolean processed"+isProcessedValue);
+				boolean isErroredValue = entity.getIsErrored();
+				// System.out.println("boolean errored"+isErroredValue);
+				if (isProcessedValue == true && isErroredValue == false) {
+					isProcessedcount++;
+					// isErroredcount--;
+
+				}
+				if (isProcessedValue == true && isErroredValue == true) {
+					isErroredcount++;
+					// System.out.println("both are 1"+isErroredcount);
+				}
+			}
+
+			dataEntity.setErrorCount(isErroredcount);
+			dataEntity.setProcessedCount(isProcessedcount);
+			System.out.println("Sum of  IsProcessed :" + isProcessedcount);
+			System.out.println("Sum of  IsErrored :" + isErroredcount);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+
+		return dataEntity;
+
+	}
+
+	public String insertData() throws InvalidKeyException, URISyntaxException, StorageException {
+		CloudTable cloudTable = azureStorage.getTables(Constants.TABLE_MISC);
+		MiscDataEntity dataEntity = getTotalProcessedEntities11();
+		// MiscDataEntity dataEntity=new MiscDataEntity("STATUS_COUNT","SAP");
+		dataEntity.setErrorCount(isErroredcount);
+		dataEntity.setProcessedCount(isProcessedcount);
+		TableOperation insert = TableOperation.insertOrReplace(dataEntity);
+		cloudTable.execute(insert);
+		return "done";
+	}
+
+	/*
+		*//**
+			 * Validates the connection string and returns the storage table
+			 * client. The connection string must be in the Azure connection
+			 * string format.
+			 *
+			 * @return The newly created CloudTableClient object
+			 *
+			 * @throws RuntimeException
+			 * @throws IOException
+			 * @throws URISyntaxException
+			 * @throws IllegalArgumentException
+			 * @throws InvalidKeyException
+			 */
+	/*
+	 * public CloudTableClient getTableClientReference() throws
+	 * RuntimeException, IOException, IllegalArgumentException,
+	 * URISyntaxException, InvalidKeyException {
+	 * 
+	 * // Retrieve the connection string Properties prop = new Properties(); try
+	 * { InputStream propertyStream =
+	 * PLMInsertDataDaoImpl.class.getClassLoader()
+	 * .getResourceAsStream("config.properties"); if (propertyStream != null) {
+	 * prop.load(propertyStream); } else { throw new RuntimeException(); } }
+	 * catch (RuntimeException | IOException e) { System.out.println(
+	 * "\nFailed to load config.properties file."); throw e; }
+	 * 
+	 * CloudStorageAccount storageAccount; try { storageAccount =
+	 * CloudStorageAccount.parse(prop.getProperty(
+	 * "azureStorageTableConnectionString")); } catch (IllegalArgumentException
+	 * | URISyntaxException e) { System.out.println(
+	 * "\nConnection string specifies an invalid URI."); System.out.println(
+	 * "Please confirm the connection string is in the Azure connection string format."
+	 * ); throw e; } catch (InvalidKeyException e) { System.out.println(
+	 * "\nConnection string specifies an invalid key."); System.out.println(
+	 * "Please confirm the AccountName and AccountKey in the connection string are valid."
+	 * ); throw e; }
+	 * 
+	 * return storageAccount.createCloudTableClient(); }
+	 * 
+	 *//**
+		 * This API will create a table if doesnot exist
+		 * 
+		 * @param tableClient
+		 * @param azureStorageTableName
+		 * @return
+		 *//*
+		 * 
+		 * @SuppressWarnings("null") public boolean
+		 * createAzureTableIfNotExists(CloudTableClient tableClient, String
+		 * azureStorageTableName) { CloudTable table = null; try { table =
+		 * tableClient.getTableReference(azureStorageTableName); } catch
+		 * (URISyntaxException | StorageException e) { // TODO Auto-generated
+		 * catch block e.printStackTrace(); } if (table == null) {
+		 * System.out.println("Created new table since it exist"); try {
+		 * table.createIfNotExist(); return true; } catch (StorageException e) {
+		 * // TODO Auto-generated catch block e.printStackTrace(); return false;
+		 * } } else { System.out.println("Table already exists"); } return true;
+		 * 
+		 * }
+		 */
+
+	/*
+	 * public List<PlmEntity> readAzureTableEntityList(CloudTableClient
+	 * tableClient, String tableName) { List<PlmEntity> dataEntity = new
+	 * ArrayList<PlmEntity>(); try { TableQuery<MiscDataEntity> partitionQuery =
+	 * TableQuery.from(MiscDataEntity.class).where(query); CloudTable cloudTable
+	 * = azureStorage.getTables(Constants.TABLE_MISC); String partitionFilter =
+	 * TableQuery.generateFilterCondition(TableConstants.PARTITION_KEY,
+	 * QueryComparisons.EQUAL, "SAP_PO");
+	 * 
+	 * TableQuery<PlmEntity> query = TableQuery.from(tableName,
+	 * PlmEntity.class).where(partitionFilter); int isProcessedcount = 0; int
+	 * isErroredcount = 0;
+	 * 
+	 * for (PlmEntity entity : tableClient.execute(query)) { boolean
+	 * isProcessedValue = entity.getIsProcessed(); // System.out.println(
+	 * "boolean processed"+isProcessedValue); boolean isErroredValue =
+	 * entity.getIsErrored(); // System.out.println("boolean errored"
+	 * +isErroredValue); if (isProcessedValue == true && isErroredValue ==
+	 * false) { //isProcessedcount++; // isErroredcount--;
+	 * 
+	 * }
+	 * 
+	 * if (isErroredValue == true) { isErroredcount++;
+	 * 
+	 * }
+	 * 
+	 * if (isProcessedValue == true && isErroredValue == true) {
+	 * isErroredcount++; // System.out.println("both are 1"+isErroredcount); } }
+	 * int isProcessedTotal = isProcessedcount;
+	 * 
+	 * System.out.println("processedcount"+isProcessedTotal);
+	 * System.out.println("erroredcount"+isErroredcount); PlmEntity sampleEntity
+	 * = new PlmEntity(); sampleEntity.setIsProcessedTotal(isProcessedTotal);
+	 * sampleEntity.setIsErroredTotal(isErroredcount); System.out.println(
+	 * "Sum of  IsProcessed :" + isProcessedcount); System.out.println(
+	 * "Sum of  IsErrored :" + isErroredcount); dataEntity.add(sampleEntity); }
+	 * catch (Exception e) { e.printStackTrace();
+	 * 
+	 * }
+	 * 
+	 * return (List<PlmEntity>) dataEntity;
+	 * 
+	 * }
+	 * 
+	 * public List<PlmEntity> getTotalProcessedEntities() { CloudTableClient
+	 * tableClient = null; List<PlmEntity> entity = null; try { tableClient =
+	 * getTableClientReference();
+	 * 
+	 * if (tableClient != null) {
+	 * 
+	 * boolean createTable = createAzureTableIfNotExists(tableClient,
+	 * "ControllesPlmPayload"); if (createTable) {
+	 * 
+	 * return (List<PlmEntity>) readAzureTableEntityList(tableClient,
+	 * "ControllesPlmPayload"); // System.out.println(
+	 * "table entities read successfully"); } else {
+	 * 
+	 * System.out.println("table entities read failed"); }
+	 * 
+	 * }
+	 * 
+	 * } catch (Exception e) { e.printStackTrace(); }
+	 * 
+	 * return (List<PlmEntity>) entity; }
+	 *//**
+		 * This api will insert entity into table
+		 * 
+		 * @param tableClient
+		 * @param tableName
+		 * @return
+		 *//*
+		 * public boolean insertReplaceAzureTableEntity(CloudTableClient
+		 * tableClient, String tableName) {
+		 * 
+		 * try { JSONParser jp = new JSONParser(); Object object = jp.parse(new
+		 * FileReader("C:\\BOM.json")); JSONObject jso = (JSONObject) object;
+		 * System.out.println(jso.toJSONString()); CounterEntity entity=new
+		 * CounterEntity("SAP_PO","SAP"); entity.setErrorCount(4);
+		 * entity.setProcessedCount(6); //BOM entity = new BOM("SAP_PO",
+		 * "0001");
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * // entity.setPayload(jso.toJSONString());
+		 * //entity.setPayload(jso.toJSONString());
+		 * 
+		 * TableOperation insertSample = TableOperation.insertOrReplace(entity);
+		 * // Call execute method on table client // so as to perform the
+		 * operation
+		 * 
+		 * tableClient.execute(tableName, insertSample); return true; } catch
+		 * (StorageException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); return false; }
+		 * 
+		 * }
+		 * 
+		 * 
+		 * public String setEntity() { CounterEntity sampleEntity = null;
+		 * CloudTableClient tableClient = null; try { tableClient =
+		 * getTableClientReference();
+		 * 
+		 * if (tableClient != null) {
+		 * 
+		 * boolean createTable = createAzureTableIfNotExists(tableClient,
+		 * "DemoTable"); if (createTable) { // return
+		 * azureSBCService.azureMessageSubscriber(service); // Adding a entity
+		 * to table insertReplaceAzureTableEntity(tableClient, "DemoTable");
+		 * System.out.println("table entities read successfully"); } else { //
+		 * return "Enity addition to table " + "sample" + "failed"; //
+		 * System.out.println("entity creation failed"); System.out.println(
+		 * "table entities read failed"); }
+		 * 
+		 * } else { System.out.println(
+		 * "Table client returned to controller was null"); return
+		 * "Table client returned to controller was null"; } } catch
+		 * (InvalidKeyException | RuntimeException | URISyntaxException |
+		 * IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } return "check logs";
+		 * 
+		 * }
+		 */
+
+}

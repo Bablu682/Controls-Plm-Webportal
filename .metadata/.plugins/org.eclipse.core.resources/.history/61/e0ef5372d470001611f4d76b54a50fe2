@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hello jQuery</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+	
+</script>
+<script>
+function sendRowData(id)
+{
+   alert("Hello there! "+id);
+	var err = $("#errorid"+id).text();
+	var txnid=$("#txnid"+id).text();
+	var ecnno=$("#ecnid"+id).text();
+	//alert(r);
+
+	// var err=$("#404").attr("id"));
+	$.ajax({
+		type : "GET",
+		url : "/ajaxcall",
+		data : {
+			"error" : err,
+			"txnid" :txnid,
+			"ecnno" :ecnno
+		},
+
+		success : function(response) {
+			alert("success" + response);
+		},
+		error : function(e) {
+			alert('Errordemoooo: ' + e);
+		}
+	});
+}
+
+/*	$(document).ready(function() {
+				
+		$('a').click(function() {
+			//  alert($("#404").attr("id"));
+			//  alert("done");
+			/* var err = $("#errorid").text();
+			var txnid=$("#txnid").text();
+			var ecnno=$("#ecnid").text();
+			//alert(r);
+
+			// var err=$("#404").attr("id"));
+			$.ajax({
+				type : "GET",
+				url : "/ajaxcall",
+				data : {
+					"error" : err,
+					"txnid" :txnid,
+					"ecnno" :ecnno
+				},
+
+				success : function(response) {
+					alert("success" + response);
+				},
+				error : function(e) {
+					alert('Errordemoooo: ' + e);
+				}
+			}); 
+
+		})
+	}); 
+
+	/*$.post("/Home/SaveEmployeeRecord", {name:'pooja'}, function (data) {  
+	 alert(data);  
+	 });
+
+	 /* $.("#404").click(function (e){
+	
+	 var url="ajaxcall"
+	 $.post(url, {name:'poojaerror'}, function (data)
+	 }); */
+</script>
+</head>
+
+<body>
+	<p>If you click on me, I will disappear.</p>
+	<p>Click me away!</p>
+	<p>Click me too!</p>
+
+	<div>
+		<p class="greeting-id">The ID is</p>
+		<p class="greeting-content">The content is</p>
+	</div>
+
+	<div id="result"></div>
+
+	<div class="tableError">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th id="ecnNUmber">ECN Number</th>
+					<th id="txnID">TxnID</th>
+					<th id="error">Error</th>
+				</tr>
+			</thead>
+			<tbody style="background-color: white;">
+				<tr>
+					<td id="ecnid5">3444</td>
+					<td id="txnid5">5</td>
+					<td id="errorid5"><a href="#" onclick="sendRowData('5')" id="404">404</a></td>
+				</tr>
+				<tr>
+					<td id="ecnid6">454645</td>
+					<td id="txnid6">6</td>
+					<td id="errorid6"><a href="#" onclick="sendRowData('6')">500</a></td>
+				</tr>
+				<tr>
+					<td id="ecnid7">456645</td>
+					<td id="txnid7">7</td>
+					<td id="errorid7"><a href="#" onclick="sendRowData('7')">501</a></td>
+				</tr>
+
+			</tbody>
+		</table>
+
+
+	</div>
+</body>
+</html>

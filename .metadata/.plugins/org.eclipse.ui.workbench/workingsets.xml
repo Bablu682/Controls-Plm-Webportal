@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1472223291643_1" label="controls-plm" name="controls-plm">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/plm-dataservice-ms" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/plm-part-bom-ms" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/plm-ack-ms" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/config-server" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/plm-payloadprocess-ms" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/eureka-server" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/plm-webportal-ms" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/plm-scheduler-ms" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/api-gateway" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/plm-storage-ms" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1472221370578_0" label="Window Working Set" name="Aggregate for window 1472221370578"/>
+</workingSetManager>
